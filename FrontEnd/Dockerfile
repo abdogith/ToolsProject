@@ -1,7 +1,7 @@
-# Step 1: Base image for building the React app
+# Step 1: Build the React App
 FROM node:16-alpine AS build
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
 # Copy dependency files
@@ -16,19 +16,26 @@ COPY . .
 # Build the React app
 RUN npm run build
 
-# Step 2: Base image for serving the app
+# Step 2: Prepare NGINX for Deployment
 FROM nginx:1.21-alpine
 
-# Set permissions for the NGINX directories
+# Set permissions for OpenShift (fix permission issues)
+USER root
 RUN mkdir -p /var/cache/nginx /var/run/nginx && \
-    chown -R nginx:nginx /var/cache/nginx /var/run/nginx /usr/share/nginx/html
+    chmod -R 777 /var/cache/nginx /var/run/nginx /etc/nginx /usr/share/nginx/html
+
+# Remove the "user" directive from NGINX configuration (optional)
+RUN sed -i '/^user/d' /etc/nginx/nginx.conf
 
 # Copy the built app to the NGINX HTML directory
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Expose the port NGINX will listen on
-EXPOSE 80
+# Expose the NGINX port
+EXPOSE 8080
 
-# Start NGINX to serve the app
-USER nginx
+# Switch back to a non-root user
+USER 1001
+
+# Start NGINX
 CMD ["nginx", "-g", "daemon off;"]
+
