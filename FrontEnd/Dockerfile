@@ -5,13 +5,13 @@ FROM node:16-alpine AS build
 WORKDIR /app
 
 # Copy dependency files
-COPY package.json package-lock.json ./ 
+COPY package.json package-lock.json ./
 
 # Install dependencies
 RUN npm install
 
 # Copy the application code
-COPY . ./
+COPY . .
 
 # Build the React app
 RUN npm run build
@@ -19,11 +19,7 @@ RUN npm run build
 # Stage 2: Serve the app using NGINX
 FROM nginx:alpine AS production
 
-# Ensure NGINX has permissions to write to the necessary directories
-RUN mkdir -p /var/cache/nginx /var/run/nginx && \
-    chown -R nginx:nginx /var/cache/nginx /var/run/nginx /etc/nginx /usr/share/nginx/html
-
-# Modify the NGINX configuration to listen on port 8080 (no need for port 80)
+# Modify NGINX configuration to use a non-privileged port (8080)
 RUN sed -i 's/listen 80;/listen 8080;/' /etc/nginx/conf.d/default.conf
 
 # Copy the built app to the NGINX HTML directory
