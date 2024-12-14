@@ -4,7 +4,7 @@ FROM node:16-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
-COPY . .
+COPY . . 
 RUN npm run build
 
 # Stage 2: Serve the app using NGINX
@@ -21,3 +21,5 @@ EXPOSE 8080
 
 # Start NGINX to serve the app
 CMD ["nginx", "-g", "daemon off;"]
+
+
