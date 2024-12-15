@@ -2,10 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
-  namespace: abdopython2001-dev  # Correct namespace
+  namespace: abdopython2001-dev  # Ensure this matches your project/namespace
   labels:
-    app: tools-project-app       # Application grouping
-    component: frontend          # Identifies this specific component
+    app: tools-project-app  # Label to group this component into tools-project-app
+    component: frontend      # Identify this as the frontend component
 spec:
   replicas: 1
   selector:
@@ -15,18 +15,16 @@ spec:
   template:
     metadata:
       labels:
-        app: tools-project-app   # Application grouping
-        component: frontend      # Identifies this specific component
+        app: tools-project-app
+        component: frontend
     spec:
-      securityContext:
-        fsGroup: 1001           # Define fsGroup at the pod level
       containers:
       - name: frontend
         image: image-registry.openshift-image-registry.svc:5000/abdopython2001-dev/frontend:latest
         ports:
         - containerPort: 8080
         securityContext:
-          runAsUser: 1001         # Running as non-root user
+          runAsNonRoot: true  # Enforce non-root execution without specifying a UID
         volumeMounts:
         - name: temp-dir
           mountPath: /tmp/client_temp
