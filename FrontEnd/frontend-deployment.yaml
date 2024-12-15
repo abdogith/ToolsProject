@@ -2,18 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
-  namespace: tools-project-app  # Ensure this matches the namespace of your project
+  namespace: abdopython2001-dev  # Correct namespace
   labels:
-    app: frontend
+    app: tools-project-app       # Application grouping
+    component: frontend          # Identifies this specific component
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: tools-project-app
+      component: frontend
   template:
     metadata:
       labels:
-        app: frontend
+        app: tools-project-app   # Application grouping
+        component: frontend      # Identifies this specific component
     spec:
       containers:
       - name: frontend
@@ -21,8 +24,8 @@ spec:
         ports:
         - containerPort: 8080
         securityContext:
-          runAsUser: 1001  # Running as non-root user
-          fsGroup: 1001    # Group for file system access
+          runAsUser: 1001         # Running as non-root user
+          fsGroup: 1001           # Group for file system access
         volumeMounts:
         - name: temp-dir
           mountPath: /tmp/client_temp
