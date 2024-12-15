@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
+  namespace: tools-project-app  # Ensure this matches the namespace of your project
   labels:
     app: frontend
 spec:
@@ -36,4 +37,5 @@ spec:
         emptyDir: {}  # Mount an emptyDir for NGINX cache
       - name: log-dir
         emptyDir: {}  # Mount an emptyDir for NGINX logs
+
 
