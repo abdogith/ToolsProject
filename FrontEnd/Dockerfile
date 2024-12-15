@@ -23,8 +23,7 @@ FROM nginx:alpine AS production
 USER 1001
 
 # Create a writable temp directory for NGINX
-RUN mkdir -p /tmp/client_temp && \
-    chown -R 1001:0 /tmp
+RUN mkdir -p /tmp/client_temp
 
 # Copy the built app from the build stage
 COPY --from=build /app/build /usr/share/nginx/html

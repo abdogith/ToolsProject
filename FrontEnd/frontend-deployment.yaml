@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: <image-registry-url>/frontend:latest # Replace with the correct image URL
+        ports:
+        - containerPort: 8080
+        securityContext:
+          runAsUser: 1001
+          fsGroup: 1001
+        volumeMounts:
+        - name: temp-dir
+          mountPath: /tmp/client_temp
+      volumes:
+      - name: temp-dir
+        emptyDir: {}
