@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: <image-registry-url>/frontend:latest # Replace with the correct image URL
+        image: image-registry.openshift-image-registry.svc:5000/abdopython2001-dev/frontend:latest
         ports:
         - containerPort: 8080
         securityContext:
@@ -25,6 +25,14 @@ spec:
         volumeMounts:
         - name: temp-dir
           mountPath: /tmp/client_temp
+        - name: cache-dir
+          mountPath: /var/cache/nginx
+        - name: log-dir
+          mountPath: /var/log/nginx
       volumes:
       - name: temp-dir
         emptyDir: {}
+      - name: cache-dir
+        emptyDir: {}  # Mount an emptyDir for NGINX cache
+      - name: log-dir
+        emptyDir: {}  # Mount an emptyDir for NGINX logs
