@@ -18,6 +18,8 @@ spec:
         app: tools-project-app   # Application grouping
         component: frontend      # Identifies this specific component
     spec:
+      securityContext:
+        fsGroup: 1001           # Define fsGroup at the pod level
       containers:
       - name: frontend
         image: image-registry.openshift-image-registry.svc:5000/abdopython2001-dev/frontend:latest
@@ -25,7 +27,6 @@ spec:
         - containerPort: 8080
         securityContext:
           runAsUser: 1001         # Running as non-root user
-          fsGroup: 1001           # Group for file system access
         volumeMounts:
         - name: temp-dir
           mountPath: /tmp/client_temp
@@ -40,5 +41,3 @@ spec:
         emptyDir: {}  # Mount an emptyDir for NGINX cache
       - name: log-dir
         emptyDir: {}  # Mount an emptyDir for NGINX logs
-
-
