@@ -2,40 +2,34 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
-  namespace: abdopython2001-dev  # Ensure this matches your project/namespace
+  namespace: abdopython2001-dev
   labels:
-    app: tools-project-app  # Label to group this component into tools-project-app
-    component: frontend      # Identify this as the frontend component
+    app: tools-project-app  # Add the correct label for the app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: tools-project-app
-      component: frontend
+      app: frontend
   template:
     metadata:
       labels:
-        app: tools-project-app
-        component: frontend
+        app: frontend
     spec:
+      securityContext:
+        runAsUser: 1000  # Set to a UID within the allowed range (1000 is usually fine)
+        fsGroup: 1000    # Set to a GID within the allowed range (1000 is usually fine)
       containers:
       - name: frontend
-        image: image-registry.openshift-image-registry.svc:5000/abdopython2001-dev/frontend:latest
+        image: image-registry.openshift-image-registry.svc:5000/abdopython2001-dev/react-openshift:latest
         ports:
-        - containerPort: 8080
-        securityContext:
-          runAsNonRoot: true  # Enforce non-root execution without specifying a UID
+        - containerPort: 80
         volumeMounts:
-        - name: temp-dir
-          mountPath: /tmp/client_temp
         - name: cache-dir
           mountPath: /var/cache/nginx
         - name: log-dir
           mountPath: /var/log/nginx
       volumes:
-      - name: temp-dir
-        emptyDir: {}
       - name: cache-dir
-        emptyDir: {}  # Mount an emptyDir for NGINX cache
+        emptyDir: {}  # Empty directory volume to allow writing to /var/cache/nginx
       - name: log-dir
-        emptyDir: {}  # Mount an emptyDir for NGINX logs
+        emptyDir: {}  # Empty directory volume to allow writing to /var/log/nginx

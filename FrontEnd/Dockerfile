@@ -1,4 +1,4 @@
-# Stage 1: Build the React app
+# Base image for building the React app
 FROM node:16-alpine AS build
 
 # Set the working directory
@@ -11,25 +11,19 @@ COPY package.json package-lock.json ./
 RUN npm install
 
 # Copy the application code
-COPY . . 
+COPY . .
 
 # Build the React app
 RUN npm run build
 
-# Stage 2: Serve the app using NGINX
+# Base image for serving the built app
 FROM nginx:alpine AS production
 
-# Switch to a non-root user
-USER 1001
-
-# Create a writable temp directory for NGINX
-RUN mkdir -p /tmp/client_temp
-
-# Copy the built app from the build stage
+# Copy the built app to the NGINX HTML directory
 COPY --from=build /app/build /usr/share/nginx/html
 
 # Expose the port NGINX will listen on
-EXPOSE 8080
+EXPOSE 80
 
 # Start NGINX to serve the app
 CMD ["nginx", "-g", "daemon off;"]
