@@ -4,7 +4,7 @@ metadata:
   name: frontend
   namespace: abdopython2001-dev
   labels:
-    app: tools-project-app  # Add the correct label for the app
+    app: tools-project-app  # Correct the label for the app
 spec:
   replicas: 1
   selector:
@@ -15,14 +15,11 @@ spec:
       labels:
         app: frontend
     spec:
-      securityContext:
-        runAsUser: 1000  # Set to a UID within the allowed range (1000 is usually fine)
-        fsGroup: 1000    # Set to a GID within the allowed range (1000 is usually fine)
       containers:
       - name: frontend
         image: image-registry.openshift-image-registry.svc:5000/abdopython2001-dev/react-openshift:latest
         ports:
-        - containerPort: 80
+        - containerPort: 8080  # Changed port to 8080 (non-privileged)
         volumeMounts:
         - name: cache-dir
           mountPath: /var/cache/nginx
