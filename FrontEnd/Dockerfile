@@ -27,7 +27,7 @@ RUN chmod -R 775 /var/cache/nginx && \
 COPY --from=build /app/build /usr/share/nginx/html
 
 # Expose the port NGINX will listen on
-EXPOSE 80
+EXPOSE 8080
 
 # Start NGINX to serve the app
 CMD ["nginx", "-g", "daemon off;"]
