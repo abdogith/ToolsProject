@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: image-registry.openshift-image-registry.svc:5000/abdopython2001-dev/react-openshift:latest
+        image: abdo495/react-openshift:latest  # Updated image
         ports:
         - containerPort: 8080  # Changed port to 8080 (non-privileged)
         volumeMounts:
@@ -30,3 +30,4 @@ spec:
         emptyDir: {}  # Empty directory volume to allow writing to /var/cache/nginx
       - name: log-dir
         emptyDir: {}  # Empty directory volume to allow writing to /var/log/nginx
+

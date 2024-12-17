@@ -22,9 +22,14 @@ FROM nginx:alpine AS production
 # Copy the built app to the NGINX HTML directory
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Expose the port NGINX will listen on
+# Copy the custom Nginx configuration file
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose the port Nginx will listen on
 EXPOSE 8080
 
-# Start NGINX to serve the app
-CMD ["nginx", "-g", "daemon off;"]
+# Start Nginx with a writable PID file location
+CMD ["nginx", "-g", "daemon off; pid /tmp/nginx.pid;"]  # Ensure PID location is /tmp/nginx.pid
+
+
 
