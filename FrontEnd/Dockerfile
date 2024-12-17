@@ -19,6 +19,10 @@ RUN npm run build
 # Base image for serving the built app
 FROM nginx:alpine AS production
 
+RUN chmod -R 775 /var/cache/nginx && \
+    chgrp -R 0 /var/cache/nginx && \
+    chmod -R g=u /var/cache/nginx
+
 # Copy the built app to the NGINX HTML directory
 COPY --from=build /app/build /usr/share/nginx/html
 
