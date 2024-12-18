@@ -23,8 +23,6 @@ RUN chmod -R 775 /var/cache/nginx && \
     chgrp -R 0 /var/cache/nginx && \
     chmod -R g=u /var/cache/nginx
 
-RUN touch /run/nginx.pid \
- && chown -R api-gatway:api-gatway /run/nginx.pid /cache/nginx
 
 # Copy the built app to the NGINX HTML directory
 COPY --from=build /app/build /usr/share/nginx/html
