@@ -21,7 +21,7 @@ const Login = () => {
 
   const onSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/users/login`, values);
+      const response = await axios.post(`${API_BASE_URL}/api/users/login`, values);
 
       // Assuming the backend sends a token in the response
       const { token } = response.data;

@@ -25,7 +25,7 @@ const Register = () => {
 
   const onSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      await axios.post(`${API_BASE_URL}/users/register`, values);
+      await axios.post(`${API_BASE_URL}/api/users/register`, values);
       alert('Registration successful!');
       navigate('/login');
     } catch (error) {
