@@ -19,7 +19,7 @@ const Login = () => {
 
   const onSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const apiUrl = "https://backend-abdopython2001-dev.apps.sandbox-m3.1530.p1.openshiftapps.com/api/users/login";
+      const apiUrl = "http://backend:8080/api/users/login";
 
       const response = await axios.post(apiUrl, values);
 
