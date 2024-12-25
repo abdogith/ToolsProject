@@ -19,17 +19,8 @@ var JwtKey = []byte("your_secret_key")
 
 func EnableCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Update this line to allow only the frontend container
-		allowedOrigin := "http://frontend:8080"
-
-		// Check if the origin header is present and matches the allowed origin
-		origin := r.Header.Get("Origin")
-		if origin == allowedOrigin {
-			w.Header().Set("Access-Control-Allow-Origin", allowedOrigin)
-		} else {
-			w.Header().Set("Access-Control-Allow-Origin", "*") // Fallback if no match
-		}
-
+		// Allow all origins for development
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
