@@ -19,7 +19,7 @@ const Login = () => {
 
   const onSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const apiUrl = "http://backend:8080/api/users/login";
+      const apiUrl = "http://localhost:8080/api/users/login";
 
       const response = await axios.post(apiUrl, values);
 
