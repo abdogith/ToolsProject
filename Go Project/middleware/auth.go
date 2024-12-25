@@ -19,11 +19,21 @@ var JwtKey = []byte("your_secret_key")
 
 func EnableCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Allow all origins for development
-		w.Header().Set("Access-Control-Allow-Origin", "*")
+		// Define allowed origins
+		allowedOrigins := map[string]bool{
+			"https://frontend-abdopython2001-dev.apps.sandbox-m3.1530.p1.openshiftapps.com/": true, // Production frontend URL
+			"http://localhost:3000": true, // Local development
+		}
+
+		origin := r.Header.Get("Origin")
+		if allowedOrigins[origin] {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+		}
+
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
+		// Respond to preflight OPTIONS request
 		if r.Method == "OPTIONS" {
 			w.WriteHeader(http.StatusOK)
 			return
