@@ -3,7 +3,6 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import API_BASE_URL from '../config'; // Import the base URL
 
 const Register = () => {
   const navigate = useNavigate();
@@ -13,7 +12,7 @@ const Register = () => {
     email: '',
     phone: '',
     password: '',
-    role: 'user',
+    role: 'user', // Default role is 'user'
   };
 
   const validationSchema = Yup.object({
@@ -21,20 +20,23 @@ const Register = () => {
     email: Yup.string().email('Invalid email format').required('Email is required'),
     phone: Yup.string().matches(/^\d{11}$/, 'Phone must be 11 digits').required('Phone is required'),
     password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+    role: Yup.string().oneOf(['user', 'admin'], 'Invalid role').required('Role is required'),
   });
 
   const onSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      await axios.post(`${API_BASE_URL}/api/users/register`, values);
+      const apiUrl = "http://backend:8080/api/users/register";
+      await axios.post(apiUrl, values);
       alert('Registration successful!');
       navigate('/login');
     } catch (error) {
-      console.error("Registration error:", error.response || error.message);
+      console.error('Registration error:', error.response || error.message);
       setErrors({ api: error.response?.data || 'Registration failed. Try again later.' });
     } finally {
       setSubmitting(false);
     }
   };
+
   return (
     <div className="register-container">
       <h2>User Registration</h2>
@@ -63,6 +65,12 @@ const Register = () => {
               <label>Password</label>
               <Field type="password" name="password" />
               <ErrorMessage name="password" component="div" className="error" />
+            </div>
+
+            <div>
+              <label>Role</label>
+              <Field type="text" name="role" />
+              <ErrorMessage name="role" component="div" className="error" />
             </div>
 
             {errors.api && <div className="error">{errors.api}</div>}

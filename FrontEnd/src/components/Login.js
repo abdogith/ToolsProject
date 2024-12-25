@@ -1,10 +1,8 @@
-
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import API_BASE_URL from '../config'; // Import the centralized API base URL
 
 const Login = () => {
   const navigate = useNavigate();
@@ -21,19 +19,18 @@ const Login = () => {
 
   const onSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/users/login`, values);
+      const apiUrl = "http://backend:8080/api/users/login";
 
-      // Assuming the backend sends a token in the response
+      const response = await axios.post(apiUrl, values);
+
       const { token } = response.data;
 
-      // Save the token to localStorage
       localStorage.setItem('authToken', token);
 
-      // Add the token to Axios default headers for future requests
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       alert('Login successful!');
-      navigate('/dashboard'); // Redirect to dashboard or another protected route
+      navigate('/dashboard');
     } catch (error) {
       console.error('Login error:', error.response || error.message);
 
@@ -47,8 +44,6 @@ const Login = () => {
       setSubmitting(false);
     }
   };
-
-
 
   return (
     <div className="login-container">

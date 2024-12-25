@@ -31,31 +31,36 @@ show_menu() {
 go_container_menu() {
   while true; do
     echo "Inside Go container menu. Select an operation:"
-    echo "1. Register Abdulrahman"
-    echo "2. Register Mahmoud"
-    echo "3. Login Abdulrahman"
-    echo "4. Login Mahmoud"
-    echo "5. Exit Go container menu"
-    read -p "Enter your choice (1-5): " go_choice
+    echo "1. Install curl"
+    echo "2. Register Abdulrahman"
+    echo "3. Register Mahmoud"
+    echo "4. Login Abdulrahman"
+    echo "5. Login Mahmoud"
+    echo "6. Exit Go container menu"
+    read -p "Enter your choice (1-6): " go_choice
 
     case $go_choice in
       1)
+        echo "Installing curl..."
+        docker exec go-container apt-get update && docker exec go-container apt-get install -y curl
+        ;;
+      2)
         echo "Registering Abdulrahman..."
         docker exec go-container curl -s -X POST "http://go-container:8080/api/users/register" -H "Content-Type: application/json" -d '{"name": "Abdulrahman", "email": "abdo@gmail.com", "phone": "12345678901", "password": "mypassword", "role": "user"}'
         ;;
-      2)
+      3)
         echo "Registering Mahmoud..."
         docker exec go-container curl -s -X POST "http://go-container:8080/api/users/register" -H "Content-Type: application/json" -d '{"name": "Mahmoud", "email": "mahmoud@gmail.com", "phone": "98765432101", "password": "anotherpassword", "role": "user"}'
         ;;
-      3)
+      4)
         echo "Logging in Abdulrahman..."
         docker exec go-container curl -s -X POST "http://go-container:8080/api/users/login" -H "Content-Type: application/json" -d '{"email": "abdo@gmail.com", "password": "mypassword"}'
         ;;
-      4)
+      5)
         echo "Logging in Mahmoud..."
         docker exec go-container curl -s -X POST "http://go-container:8080/api/users/login" -H "Content-Type: application/json" -d '{"email": "mahmoud@gmail.com", "password": "anotherpassword"}'
         ;;
-      5)
+      6)
         echo "Exiting Go container menu."
         break
         ;;
@@ -111,9 +116,9 @@ perform_action() {
     1) docker build -t my-mysql-image ./MYSQL ;;
     2) docker run -d --name mysql-container -p 3308:3306 my-mysql-image ;;
     3) docker build -t my-go-app ./Go_Project ;;
-    4) docker run -d --name go-container -p 8080:8080 -e DB_HOST=mysql-container -e DB_PORT=3306 -e DB_USER=root -e DB_PASSWORD=abdomysql2001 -e DB_NAME=userdb --network my-network my-go-app ;;
+    4) docker run -d --name go-container --network my-network -p 8080:8080 -e DB_HOST=mysql-container -e DB_PORT=3306 -e DB_USER=root -e DB_PASSWORD=abdomysql2001 -e DB_NAME=userdb my-go-app ;;
     5) docker build -t react-frontend ./FrontEnd ;;
-    6) docker run -d --name react-container -p 3000:3000 react-frontend ;;
+    6) docker run -d --name react-container --network my-network -p 3000:80 react-frontend ;;
     7) docker images ;;
     8) docker ps ;;
     9) docker ps -a ;;

@@ -20,7 +20,7 @@ var JwtKey = []byte("your_secret_key")
 func EnableCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Update this line to allow only the frontend container
-		allowedOrigin := "http://react-container:3000"
+		allowedOrigin := "http://frontend:8080"
 
 		// Check if the origin header is present and matches the allowed origin
 		origin := r.Header.Get("Origin")
