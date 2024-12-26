@@ -25,7 +25,7 @@ const Register = () => {
 
   const onSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const apiUrl = "http://localhost:8080/api/users/register";
+      const apiUrl = "https://backend-abdopython2001-dev.apps.sandbox-m3.1530.p1.openshiftapps.com/api/users/register";
       await axios.post(apiUrl, values);
       alert('Registration successful!');
       navigate('/login');

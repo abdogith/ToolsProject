@@ -114,7 +114,7 @@ react_container_menu() {
 perform_action() {
   case $1 in
     1) docker build -t my-mysql-image ./MYSQL ;;
-    2) docker run -d --name mysql-container -p 3308:3306 my-mysql-image ;;
+    2) docker run -d --name mysql-container --network my-network -p 3308:3306 my-mysql-image ;;
     3) docker build -t my-go-app ./Go_Project ;;
     4) docker run -d --name go-container --network my-network -p 8080:8080 -e DB_HOST=mysql-container -e DB_PORT=3306 -e DB_USER=root -e DB_PASSWORD=abdomysql2001 -e DB_NAME=userdb my-go-app ;;
     5) docker build -t react-frontend ./FrontEnd ;;
